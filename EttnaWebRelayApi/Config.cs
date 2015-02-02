@@ -47,9 +47,10 @@ namespace EttnaWebRelayApi
 				if (File.Exists(ConfigXML))
 				{
 					XmlSerializer serializer = new XmlSerializer(typeof(ConfigFile));
-					TextReader textReader = new StreamReader(ConfigXML);
-					m_config = (ConfigFile)serializer.Deserialize(textReader);
-					textReader.Close();
+					using(TextReader textReader = new StreamReader(ConfigXML))
+					{ 
+						m_config = (ConfigFile)serializer.Deserialize(textReader);
+					}
 					return m_config;
 				}
 				else
@@ -74,9 +75,10 @@ namespace EttnaWebRelayApi
 			try
 			{
 				XmlSerializer serializer = new XmlSerializer(typeof(ConfigFile));
-				TextWriter textWriter = new StreamWriter(ConfigXML);
-				serializer.Serialize(textWriter, m_config);
-				textWriter.Close();
+				using (TextWriter textWriter = new StreamWriter(ConfigXML))
+				{
+					serializer.Serialize(textWriter, m_config);
+				}
 			}
 			catch (Exception ex)
 			{

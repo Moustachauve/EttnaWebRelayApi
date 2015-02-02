@@ -107,6 +107,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultObjects\BaseResult.cs" />
     <Compile Include="ResultObjects\ChatResults.cs" />
+    <Compile Include="ResultObjects\CubeGridResults.cs" />
     <Compile Include="ResultObjects\PlayerResult.cs" />
   </ItemGroup>
   <ItemGroup>

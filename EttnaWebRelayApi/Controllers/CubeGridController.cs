@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Http;
 using EttnaWebRelayApi.GameObjects;
+using EttnaWebRelayApi.ResultObjects;
 using SEModAPIInternal.API.Common;
 using SEModAPIInternal.API.Entity;
 using SEModAPIInternal.API.Entity.Sector.SectorObject;
@@ -14,7 +15,7 @@ namespace EttnaWebRelayApi.Controllers
 	public class CubeGridController : ApiController
 	{
 		[HttpGet]
-		public List<CubeGrid> GetOwnedGrids(string steamId)
+		public GetOwnedGridsResult GetOwnedGrids(string steamId)
 		{
 			Log.ConsoleAndFile(string.Format("Requesting cubegrids owned by {0}.", steamId));
 
@@ -52,12 +53,11 @@ namespace EttnaWebRelayApi.Controllers
 						}
 					}
 				}
-				Log.Console(string.Format("{0} ships found", ownedcubeGrids.Count));
 			}
 			else
-				Log.Console("Found no player with steamID " + steamId);
+				return new GetOwnedGridsResult(string.Format("Found no player with steamID \"{0}\"", steamId), true);
 
-			return ownedcubeGrids;
+			return new GetOwnedGridsResult(string.Format("{0} ships found", ownedcubeGrids.Count), false, ownedcubeGrids);
 		}
 
 	}

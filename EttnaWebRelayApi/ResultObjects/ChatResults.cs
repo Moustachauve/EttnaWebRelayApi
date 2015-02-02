@@ -2,19 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EttnaWebRelayApi.GameObjects;
+using SEModAPIExtensions.API;
 
 namespace EttnaWebRelayApi.ResultObjects
 {
-	public class SendPublicMessageResult
-	{
-		public string Message { get; set; }
-		public bool Error { get; set; }
 
-		public SendPublicMessageResult(string message, bool error)
+	public class GetChatMessagesFromResult : BaseResult
+	{
+		public List<ChatMessage> ChatMessages { get; set; }
+		public int LastMessageIndex { get { return ChatMessages.Count - 1; } }
+
+		public GetChatMessagesFromResult(string status, bool error)
+			: base(status, error)
 		{
-			Message = message;
-			Error = error;
+			ChatMessages = new List<ChatMessage>();
+		}
+
+		public GetChatMessagesFromResult(string status, bool error, List<ChatMessage> messageList)
+			: base(status, error)
+		{
+			ChatMessages = messageList;
 		}
 	}
-
 }

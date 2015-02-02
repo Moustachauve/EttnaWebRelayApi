@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{8BA50967-553C-4159-B920-A46DD14A9969}"
+	ProjectSection(SolutionItems) = preProject
+		Libraries\Sandbox.Common.dll = Libraries\Sandbox.Common.dll
+		Libraries\Sandbox.Common.XmlSerializers.dll = Libraries\Sandbox.Common.XmlSerializers.dll
+		Libraries\SEModAPI.dll = Libraries\SEModAPI.dll
+		Libraries\SEModAPIExtensions.dll = Libraries\SEModAPIExtensions.dll
+		Libraries\SEModAPIInternal.dll = Libraries\SEModAPIInternal.dll
+		Libraries\VRage.Common.dll = Libraries\VRage.Common.dll
+		Libraries\VRage.Math.dll = Libraries\VRage.Math.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EttnaWebRelayApi", "EttnaWebRelayApi\EttnaWebRelayApi.csproj", "{AF27D0FD-3F8B-417B-ADEA-5471A683D0E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF27D0FD-3F8B-417B-ADEA-5471A683D0E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF27D0FD-3F8B-417B-ADEA-5471A683D0E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF27D0FD-3F8B-417B-ADEA-5471A683D0E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF27D0FD-3F8B-417B-ADEA-5471A683D0E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Http;
 using EttnaWebRelayApi.GameObjects;
+using EttnaWebRelayApi.ResultObjects;
 using SEModAPIInternal.API.Common;
 using SEModAPIInternal.API.Entity;
 using SEModAPIInternal.API.Entity.Sector;
@@ -16,17 +17,17 @@ namespace EttnaWebRelayApi.Controllers
 	public class PlayerController : ApiController
 	{
 		[HttpGet]
-		public List<Player> GetPlayers()
+		public GetPlayersResult GetPlayers()
 		{
 			var players = new List<Player>();
-			var connectedPlayers = PlayerManager.Instance.ConnectedPlayers;
+			List<ulong> connectedPlayers = PlayerManager.Instance.ConnectedPlayers;
 
 			Log.ConsoleAndFile(string.Format("Requesting connected players ({0})", connectedPlayers.Count));
 
 			foreach (ulong remoteUserId in connectedPlayers)
 				players.Add(new Player(remoteUserId, PlayerMap.Instance.GetPlayerNameFromSteamId(remoteUserId)));
 
-			return players;
+			return new GetPlayersResult(string.Format("{0} player(s) online", players.Count), false, players);
 		}
 
 		[HttpGet]

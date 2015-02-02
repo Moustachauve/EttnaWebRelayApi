@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="Controllers\ChatController.cs" />
+    <Compile Include="Controllers\CubeGridController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="GameObjects\ChatMessage.cs" />

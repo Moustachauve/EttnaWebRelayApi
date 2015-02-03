@@ -6,21 +6,32 @@ using EttnaWebRelayApi.GameObjects;
 
 namespace EttnaWebRelayApi.ResultObjects
 {
-	public class GetPlayersResult : BaseResult
+	public class GetConnectedPlayersResult : BaseResult
 	{
-		public List<Player> Players { get; set; }
+		public List<BasicPlayer> Players;
 
 
-		public GetPlayersResult(string status, bool error)
+		public GetConnectedPlayersResult(string status, bool error)
 			: base(status, error)
 		{
-			Players = new List<Player>();
+			Players = new List<BasicPlayer>();
 		}
-		public GetPlayersResult(string status, bool error, List<Player> playerList)
+		public GetConnectedPlayersResult(string status, bool error, List<BasicPlayer> playerList)
 			: base(status, error)
 		{
 			Players = playerList;
 		}
 
+	}
+
+	public class GetPlayerResult : BaseResult
+	{
+		BasicPlayer PlayerInfo { get; set; }
+
+		public GetPlayerResult(string status, bool error, BasicPlayer player)
+			: base(status, error)
+		{
+			PlayerInfo = player;
+		}
 	}
 }

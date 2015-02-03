@@ -17,18 +17,32 @@ namespace EttnaWebRelayApi.Controllers
 	public class PlayerController : ApiController
 	{
 		[HttpGet]
-		public GetPlayersResult GetConnectedPlayers()
+		public GetConnectedPlayersResult GetConnectedPlayers()
 		{
-			var players = new List<Player>();
+			var players = new List<BasicPlayer>();
 			List<ulong> connectedPlayers = PlayerManager.Instance.ConnectedPlayers;
 
 			Log.ConsoleAndFile(string.Format("Requesting connected players ({0})", connectedPlayers.Count));
 
-			foreach (ulong remoteUserId in connectedPlayers)
-				players.Add(new Player(remoteUserId, PlayerMap.Instance.GetPlayerNameFromSteamId(remoteUserId)));
+			foreach (ulong steamID in connectedPlayers)
+			{
+				string userName = PlayerMap.Instance.GetPlayerNameFromSteamId(steamID);
+				long entityID = PlayerMap.Instance.GetPlayerEntityId(steamID);
+				players.Add(new BasicPlayer(steamID, entityID, userName));
+			}
 
-			return new GetPlayersResult(string.Format("{0} player(s) online", players.Count), false, players);
+
+			return new GetConnectedPlayersResult(string.Format("{0} player(s) online", players.Count), false, players);
 		}
 
+		//TODO: Finish
+		[HttpGet]
+		public CharacterEntity GetPlayer(ulong steamID)
+		{
+			long gameEntity = PlayerMap.Instance.GetPlayerEntityId(steamID);
+			CharacterEntity characEntity = (CharacterEntity) GameEntityManager.GetEntity(gameEntity);
+
+			return characEntity;
+		}
 	}
 }

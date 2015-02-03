@@ -17,7 +17,7 @@ namespace EttnaWebRelayApi.Controllers
 	public class PlayerController : ApiController
 	{
 		[HttpGet]
-		public GetPlayersResult GetPlayers()
+		public GetPlayersResult GetConnectedPlayers()
 		{
 			var players = new List<Player>();
 			List<ulong> connectedPlayers = PlayerManager.Instance.ConnectedPlayers;

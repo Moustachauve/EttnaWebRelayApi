@@ -112,6 +112,7 @@
     <Compile Include="ResultObjects\CubeGridResults.cs" />
     <Compile Include="ResultObjects\FactionResults.cs" />
     <Compile Include="ResultObjects\PlayerResult.cs" />
+    <Compile Include="SavedCubeGrid.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -65,6 +65,8 @@ namespace EttnaWebRelayApi
 			{
 				Log.ConsoleAndFile("Loading configuration...");
 				Config.FolderPath = new FileInfo(path).DirectoryName;
+				Log.ConsoleAndFile("Scanning for previously exported ships...");
+				SavedCubeGrid.ScanDirectory();
 
 				StartWebAPI();
 			}

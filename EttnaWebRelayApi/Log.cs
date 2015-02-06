@@ -21,7 +21,7 @@ namespace EttnaWebRelayApi
 			StringBuilder pluginVersion = new StringBuilder( typeof( Log ).Assembly.GetName( ).Version.ToString( ) );
 
 			m_log.Init(PLUGIN_PREFIX + "_Main.log", pluginVersion);
-			m_log.Init(PLUGIN_PREFIX + "_Error.log", pluginVersion);
+			m_errorLog.Init(PLUGIN_PREFIX + "_Error.log", pluginVersion);
 		}
 
 		public static void File(string text)
@@ -41,7 +41,11 @@ namespace EttnaWebRelayApi
 
 		public static void Error(System.Exception ex)
 		{
-			m_errorLog.WriteLine(ex);
+			m_errorLog.WriteLine("Error in " + ex.TargetSite);
+			m_errorLog.WriteLine(ex.Message);
+			m_errorLog.WriteLine(ex.StackTrace);
+			//TEST
+			m_errorLog.WriteLine("[TEST]" + ex.ToString());
 			Console("[ERROR] " + ex.Message);
 			Console("[ERROR] See the error log for more information");
 		}

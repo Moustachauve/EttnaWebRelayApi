@@ -13,7 +13,7 @@ namespace EttnaWebRelayApi
 		public string MainEndpointName { get; set; }
 		public string BindIP { get; set; }
 		public int Port { get; set; }
-		public DirectoryInfo ExportShipPath { get; set; }
+		public string ExportShipPath { get; set; }
 	}
 
 	public static class Config
@@ -24,7 +24,7 @@ namespace EttnaWebRelayApi
 		private static ConfigFile m_config;
 
 		public static string FolderPath { get; set; }
-		public static string ConfigXML { get { return FolderPath + @"\WebRelayConfig.xml"; } }
+		public static string ConfigXMLPath { get { return FolderPath + @"\WebRelayConfig.xml"; } }
 
 		public static ConfigFile Settings
 		{
@@ -45,10 +45,11 @@ namespace EttnaWebRelayApi
 				if (m_config == null)
 					m_config = new ConfigFile();
 
-				if (File.Exists(ConfigXML))
+				if (File.Exists(ConfigXMLPath))
 				{
+					Log.ConsoleAndFile("Config file exist");
 					XmlSerializer serializer = new XmlSerializer(typeof(ConfigFile));
-					using(TextReader textReader = new StreamReader(ConfigXML))
+					using(TextReader textReader = new StreamReader(ConfigXMLPath))
 					{ 
 						m_config = (ConfigFile)serializer.Deserialize(textReader);
 					}
@@ -56,10 +57,11 @@ namespace EttnaWebRelayApi
 				}
 				else
 				{
+					Log.ConsoleAndFile("Config file do not exist");
 					m_config.MainEndpointName = "EttnaWebRelay";
 					m_config.BindIP = "localhost";
 					m_config.Port = 1337;
-					m_config.ExportShipPath = new DirectoryInfo(FolderPath + @"\Ships");
+					m_config.ExportShipPath = FolderPath + @"\Ships";
 					Save();
 				}
 				return m_config;
@@ -75,8 +77,9 @@ namespace EttnaWebRelayApi
 		{
 			try
 			{
+				Log.ConsoleAndFile("Saving config file...");
 				XmlSerializer serializer = new XmlSerializer(typeof(ConfigFile));
-				using (TextWriter textWriter = new StreamWriter(ConfigXML))
+				using (TextWriter textWriter = new StreamWriter(ConfigXMLPath))
 				{
 					serializer.Serialize(textWriter, m_config);
 				}
@@ -84,6 +87,7 @@ namespace EttnaWebRelayApi
 			catch (Exception ex)
 			{
 				Log.Error(ex);
+				Log.ConsoleAndFile(ex.StackTrace);
 			}
 		}
 

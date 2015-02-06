@@ -73,7 +73,8 @@ namespace EttnaWebRelayApi.Controllers
 
 				CubeGridEntity cubeGrid = (CubeGridEntity)baseObj;
 
-				FileInfo file = new FileInfo(Config.Settings.ExportShipPath + @"\" + cubeGrid.EntityId + ".sbc");
+				//new FileInfo(Config.Settings.ExportShipPath + @"\" + cubeGrid.EntityId + ".sbc");
+				FileInfo file = new FileInfo(string.Format(@"{0}\{1}_{2}.sbc", Config.Settings.ExportShipPath, cubeGrid.EntityId, DateTime.Now.ToString("yyyyMMddHHmmss")));
 
 				cubeGrid.Export(file);
 
@@ -82,6 +83,20 @@ namespace EttnaWebRelayApi.Controllers
 			catch(Exception e)
 			{
 				return new BaseResult(string.Format("Internal error: {0}. See log for details", e.Message), true);
+			}
+		}
+
+		public void ImportGrid(long entityID)
+		{
+			try
+			{
+				
+
+			}
+			catch (Exception e)
+			{
+				
+				throw;
 			}
 		}
 	}

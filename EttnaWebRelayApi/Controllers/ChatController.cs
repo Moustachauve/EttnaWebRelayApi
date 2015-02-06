@@ -89,5 +89,39 @@ namespace EttnaWebRelayApi.Controllers
 			}
 			return new GetChatMessagesFromResult("", false, messageList);
 		}
+
+		[HttpGet]
+		public GetChatMessagesFromResult GetChatMessagesFrom(int id, bool ignoreServer)
+		{
+			if (id < 0)
+				return new GetChatMessagesFromResult("Id can't be smaller than 0", true);
+			if (ChatManager.Instance.ChatHistory.Count < id)
+				return new GetChatMessagesFromResult("Id is greater than last message Id", true);
+			if (ChatManager.Instance.ChatHistory.Count == id)
+				return new GetChatMessagesFromResult("No new messages", false);
+			var messageList = new List<ChatMessage>();
+
+			for (int i = id; i < ChatManager.Instance.ChatHistory.Count; i++)
+			{
+				ChatManager.ChatEvent curChatMessage = ChatManager.Instance.ChatHistory[i];
+				ulong steamID = curChatMessage.SourceUserId;
+
+				string name;
+				if (curChatMessage.SourceUserId == 0)
+				{
+					if (ignoreServer)
+						continue;
+					name = "Server";
+				}
+				else
+					name = PlayerMap.Instance.GetPlayerNameFromSteamId(steamID);
+
+				string message = curChatMessage.Message;
+
+				messageList.Add(new ChatMessage(i, steamID, name, message));
+			}
+			return new GetChatMessagesFromResult("", false, messageList);
+		}
+
 	}
 }

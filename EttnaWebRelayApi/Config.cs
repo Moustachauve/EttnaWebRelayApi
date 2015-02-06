@@ -13,6 +13,7 @@ namespace EttnaWebRelayApi
 		public string MainEndpointName { get; set; }
 		public string BindIP { get; set; }
 		public int Port { get; set; }
+		public DirectoryInfo ExportShipPath { get; set; }
 	}
 
 	public static class Config
@@ -58,7 +59,7 @@ namespace EttnaWebRelayApi
 					m_config.MainEndpointName = "EttnaWebRelay";
 					m_config.BindIP = "localhost";
 					m_config.Port = 1337;
-					//m_config.AutoStart = true;
+					m_config.ExportShipPath = new DirectoryInfo(FolderPath + @"\Ships");
 					Save();
 				}
 				return m_config;

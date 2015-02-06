@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Http;
@@ -60,5 +61,28 @@ namespace EttnaWebRelayApi.Controllers
 			return new GetOwnedGridsResult(string.Format("{0} ships found", ownedcubeGrids.Count), false, ownedcubeGrids);
 		}
 
+		//TODO: Test this endpoint
+		public BaseResult ExportGrid(long entityID)
+		{
+			try
+			{
+				BaseObject baseObj = SectorObjectManager.Instance.GetEntry(entityID);
+
+				if(!(baseObj is CubeGridEntity))
+					return new BaseResult(string.Format("Entity {0} is not a cubeGrid", entityID), true);
+
+				CubeGridEntity cubeGrid = (CubeGridEntity)baseObj;
+
+				FileInfo file = new FileInfo(Config.Settings.ExportShipPath + @"\" + cubeGrid.EntityId + ".sbc");
+
+				cubeGrid.Export(file);
+
+				return new BaseResult(string.Format("{0} exported successfully", entityID), false);
+			}
+			catch(Exception e)
+			{
+				return new BaseResult(string.Format("Internal error: {0}. See log for details", e.Message), true);
+			}
+		}
 	}
 }

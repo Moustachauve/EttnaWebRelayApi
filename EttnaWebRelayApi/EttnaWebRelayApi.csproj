@@ -113,12 +113,7 @@
     <Compile Include="ResultObjects\FactionResults.cs" />
     <Compile Include="ResultObjects\PlayerResult.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

@@ -97,10 +97,12 @@
     <Compile Include="Config.cs" />
     <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\CubeGridController.cs" />
+    <Compile Include="Controllers\FactionController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="GameObjects\ChatMessage.cs" />
     <Compile Include="GameObjects\CubeGrid.cs" />
+    <Compile Include="GameObjects\Faction.cs" />
     <Compile Include="GameObjects\Player.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Main.cs" />
@@ -108,6 +110,7 @@
     <Compile Include="ResultObjects\BaseResult.cs" />
     <Compile Include="ResultObjects\ChatResults.cs" />
     <Compile Include="ResultObjects\CubeGridResults.cs" />
+    <Compile Include="ResultObjects\FactionResults.cs" />
     <Compile Include="ResultObjects\PlayerResult.cs" />
   </ItemGroup>
   <ItemGroup>

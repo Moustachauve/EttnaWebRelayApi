@@ -40,7 +40,7 @@ namespace EttnaWebRelayApi.Controllers
 			return new GetCubeGridsResult(string.Format("{0} cubegrid(s) found", cubeGrids.Count), false, cubeGrids);
 		}
 		[HttpGet]
-		public GetCubeGridsResult GetOwnedGrids(string steamId)
+		public GetCubeGridsResult GetPlayerCubeGrids(string steamId)
 		{
 			var ownedcubeGrids = new List<CubeGrid>();
 			var cubeGridEntities = SectorObjectManager.Instance.GetTypedInternalData<CubeGridEntity>();
@@ -77,7 +77,6 @@ namespace EttnaWebRelayApi.Controllers
 			return new GetCubeGridsResult(string.Format("{0} ships found", ownedcubeGrids.Count), false, ownedcubeGrids);
 		}
 		
-		//TODO: Test this endpoint
 		[HttpGet]
 		public BaseResult ExportGrid(long entityID)
 		{

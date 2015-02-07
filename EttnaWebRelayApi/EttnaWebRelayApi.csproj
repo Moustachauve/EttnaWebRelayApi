@@ -104,6 +104,7 @@
     <Compile Include="GameObjects\CubeGrid.cs" />
     <Compile Include="GameObjects\Faction.cs" />
     <Compile Include="GameObjects\Player.cs" />
+    <Compile Include="GameObjects\Vector3.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

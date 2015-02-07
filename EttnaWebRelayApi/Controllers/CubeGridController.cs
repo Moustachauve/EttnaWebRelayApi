@@ -28,9 +28,7 @@ namespace EttnaWebRelayApi.Controllers
 				var currCubeGridEntity = cubeGridEntities[cubeGridId];
 
 				CubeGrid grid = new CubeGrid();
-
 				grid.Name = currCubeGridEntity.DisplayName;
-
 				grid.EntityID = currCubeGridEntity.EntityId;
 				grid.BlockCount = currCubeGridEntity.CubeBlocks.Count;
 				grid.Type = currCubeGridEntity.IsStatic ? "Station" : currCubeGridEntity.GridSizeEnum.ToString();
@@ -39,6 +37,7 @@ namespace EttnaWebRelayApi.Controllers
 
 			return new GetCubeGridsResult(string.Format("{0} cubegrid(s) found", cubeGrids.Count), false, cubeGrids);
 		}
+
 		[HttpGet]
 		public GetCubeGridsResult GetPlayerCubeGrids(string steamId)
 		{
@@ -98,6 +97,7 @@ namespace EttnaWebRelayApi.Controllers
 			}
 			catch (Exception e)
 			{
+				Log.Error(e);
 				return new BaseResult(string.Format("Internal error: {0}. See log for details", e.Message), true);
 			}
 		}

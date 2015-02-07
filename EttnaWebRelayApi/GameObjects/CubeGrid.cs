@@ -15,6 +15,14 @@ namespace EttnaWebRelayApi.GameObjects
 
 		public int BlockCount { get; set; }
 
+		public Vector3 Position { get; set; }
+
+		public Vector3 LinearVelocity { get; set; }
+
+		public Vector3 AngularVelocity { get; set; }
+
+		public float MaxLinearVelocity { get; set; }
+
 		public CubeGrid() { }
 
 		public CubeGrid(string name, long id, string type, int blockcount)

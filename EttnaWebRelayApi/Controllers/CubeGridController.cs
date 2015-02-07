@@ -8,7 +8,9 @@ using EttnaWebRelayApi.GameObjects;
 using EttnaWebRelayApi.ResultObjects;
 using SEModAPIInternal.API.Common;
 using SEModAPIInternal.API.Entity;
+using SEModAPIInternal.API.Entity.Sector;
 using SEModAPIInternal.API.Entity.Sector.SectorObject;
+using SEModAPIInternal.API.Entity.Sector.SectorObject.CubeGrid;
 using SEModAPIInternal.API.Entity.Sector.SectorObject.CubeGrid.CubeBlock;
 
 namespace EttnaWebRelayApi.Controllers
@@ -16,59 +18,74 @@ namespace EttnaWebRelayApi.Controllers
 	public class CubeGridController : ApiController
 	{
 		[HttpGet]
-		public GetOwnedGridsResult GetOwnedGrids(string steamId)
+		public GetCubeGridsResult GetAllCubeGrids()
 		{
-			Log.ConsoleAndFile(string.Format("Requesting cubegrids owned by {0}.", steamId));
+			var cubeGrids = new List<CubeGrid>();
+			var cubeGridEntities = SectorObjectManager.Instance.GetTypedInternalData<CubeGridEntity>();
 
+			for (int cubeGridId = cubeGridEntities.Count - 1; cubeGridId >= 0; cubeGridId--)
+			{
+				var currCubeGridEntity = cubeGridEntities[cubeGridId];
+
+				CubeGrid grid = new CubeGrid();
+
+				grid.Name = currCubeGridEntity.DisplayName;
+
+				grid.EntityID = currCubeGridEntity.EntityId;
+				grid.BlockCount = currCubeGridEntity.CubeBlocks.Count;
+				grid.Type = currCubeGridEntity.IsStatic ? "Station" : currCubeGridEntity.GridSizeEnum.ToString();
+				cubeGrids.Add(grid);
+			}
+
+			return new GetCubeGridsResult(string.Format("{0} cubegrid(s) found", cubeGrids.Count), false, cubeGrids);
+		}
+		[HttpGet]
+		public GetCubeGridsResult GetOwnedGrids(string steamId)
+		{
 			var ownedcubeGrids = new List<CubeGrid>();
 			var cubeGridEntities = SectorObjectManager.Instance.GetTypedInternalData<CubeGridEntity>();
 			var playerIds = PlayerMap.Instance.GetPlayerIdsFromSteamId(ulong.Parse(steamId));
-			if (playerIds.Count > 0)
+			if (playerIds.Count == 0)
+				return new GetCubeGridsResult(string.Format("Found no player with steamID \"{0}\"", steamId), true);
+
+			Log.ConsoleAndFile(string.Format("Found player {0} for SteamId {1}. Querying ships...", PlayerMap.Instance.GetPlayerNameFromSteamId(ulong.Parse(steamId)), steamId));
+			for (int cubeGridId = cubeGridEntities.Count - 1; cubeGridId >= 0; cubeGridId--)
 			{
-				Log.ConsoleAndFile(string.Format("Found player {0} for SteamId {1}. Querying ships...", PlayerMap.Instance.GetPlayerNameFromSteamId(ulong.Parse(steamId)), steamId));
-				for (int cubeGridId = cubeGridEntities.Count - 1; cubeGridId >= 0; cubeGridId--)
+				var cubeGridEntity = cubeGridEntities[cubeGridId];
+
+				for (int cubeBlockId = cubeGridEntity.CubeBlocks.Count - 1; cubeBlockId >= 0; cubeBlockId--)
 				{
-					var cubeGridEntity = cubeGridEntities[cubeGridId];
+					var cubeBlock = cubeGridEntity.CubeBlocks[cubeBlockId];
 
-					for (int cubeBlockId = cubeGridEntity.CubeBlocks.Count - 1; cubeBlockId >= 0; cubeBlockId--)
+					if (cubeBlock is CockpitEntity || cubeBlock is AntennaEntity || cubeBlock is BeaconEntity)
 					{
-						var cubeBlock = cubeGridEntity.CubeBlocks[cubeBlockId];
-
-						if (cubeBlock is CockpitEntity || cubeBlock is AntennaEntity || cubeBlock is BeaconEntity)
+						if (playerIds.Contains(cubeBlock.Owner))
 						{
-							if (playerIds.Contains(cubeBlock.Owner))
-							{
-								CubeGrid grid = new CubeGrid();
+							CubeGrid grid = new CubeGrid();
 
-								if (cubeGridEntity.Name.Contains("|"))
-									grid.Names.AddRange(cubeGridEntity.Name.Split('|'));
-								else
-									grid.Names.Add(cubeGridEntity.Name);
-
-								grid.EntityID = cubeGridEntity.EntityId;
-								grid.BlockCount = cubeGridEntity.CubeBlocks.Count;
-								grid.Type = cubeGridEntity.IsStatic ? "Station" : cubeGridEntity.GridSizeEnum.ToString();
-								ownedcubeGrids.Add(grid);
-								break;
-							}
+							grid.Name = cubeGridEntity.DisplayName;
+							grid.EntityID = cubeGridEntity.EntityId;
+							grid.BlockCount = cubeGridEntity.CubeBlocks.Count;
+							grid.Type = cubeGridEntity.IsStatic ? "Station" : cubeGridEntity.GridSizeEnum.ToString();
+							ownedcubeGrids.Add(grid);
+							break;
 						}
 					}
 				}
 			}
-			else
-				return new GetOwnedGridsResult(string.Format("Found no player with steamID \"{0}\"", steamId), true);
 
-			return new GetOwnedGridsResult(string.Format("{0} ships found", ownedcubeGrids.Count), false, ownedcubeGrids);
+			return new GetCubeGridsResult(string.Format("{0} ships found", ownedcubeGrids.Count), false, ownedcubeGrids);
 		}
-
+		
 		//TODO: Test this endpoint
+		[HttpGet]
 		public BaseResult ExportGrid(long entityID)
 		{
 			try
 			{
 				BaseObject baseObj = SectorObjectManager.Instance.GetEntry(entityID);
 
-				if(!(baseObj is CubeGridEntity))
+				if (!(baseObj is CubeGridEntity))
 					return new BaseResult(string.Format("Entity {0} is not a cubeGrid", entityID), true);
 
 				CubeGridEntity cubeGrid = (CubeGridEntity)baseObj;
@@ -80,7 +97,7 @@ namespace EttnaWebRelayApi.Controllers
 
 				return new BaseResult(string.Format("{0} exported successfully", entityID), false);
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				return new BaseResult(string.Format("Internal error: {0}. See log for details", e.Message), true);
 			}
@@ -90,12 +107,12 @@ namespace EttnaWebRelayApi.Controllers
 		{
 			try
 			{
-				
+
 
 			}
 			catch (Exception e)
 			{
-				
+
 				throw;
 			}
 		}

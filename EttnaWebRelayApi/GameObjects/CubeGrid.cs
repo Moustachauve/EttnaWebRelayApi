@@ -7,9 +7,7 @@ namespace EttnaWebRelayApi.GameObjects
 {
 	public class CubeGrid
 	{
-		private List<string> m_names = new List<string>();
-
-		public List<string> Names { get { return m_names; } set { m_names = value; } }
+		public string Name { get; set; }
 
 		public long EntityID { get; set; }
 
@@ -19,9 +17,9 @@ namespace EttnaWebRelayApi.GameObjects
 
 		public CubeGrid() { }
 
-		public CubeGrid(List<string> names, long id, string type, int blockcount)
+		public CubeGrid(string name, long id, string type, int blockcount)
 		{
-			Names = names;
+			Name = name;
 			EntityID = id;
 			Type = type;
 			BlockCount = blockcount;

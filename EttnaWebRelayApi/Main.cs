@@ -19,6 +19,7 @@ using SEModAPIInternal.API.Entity.Sector.SectorObject.CubeGrid.CubeBlock;
 using SEModAPIInternal.API.Entity;
 using SEModAPIInternal.API.Common;
 using System.IO;
+using EttnaWebRelayApi.Utility;
 
 namespace EttnaWebRelayApi
 {
@@ -66,7 +67,7 @@ namespace EttnaWebRelayApi
 				Log.ConsoleAndFile("Loading configuration...");
 				Config.FolderPath = new FileInfo(path).DirectoryName;
 				Log.ConsoleAndFile("Scanning for previously exported ships...");
-				SavedCubeGrid.ScanDirectory();
+				SavedCubeGridManager.ScanDirectory();
 
 				StartWebAPI();
 			}

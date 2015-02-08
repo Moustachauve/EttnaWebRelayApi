@@ -6,6 +6,7 @@ using System.Text;
 using System.Web.Http;
 using EttnaWebRelayApi.GameObjects;
 using EttnaWebRelayApi.ResultObjects;
+using EttnaWebRelayApi.Utility;
 using SEModAPIInternal.API.Common;
 using SEModAPIInternal.API.Entity;
 using SEModAPIInternal.API.Entity.Sector;
@@ -77,7 +78,7 @@ namespace EttnaWebRelayApi.Controllers
 		}
 		
 		[HttpGet]
-		public BaseResult ExportGrid(long entityID)
+		public BaseResult ExportCubeGrid(long entityID)
 		{
 			try
 			{
@@ -102,17 +103,27 @@ namespace EttnaWebRelayApi.Controllers
 			}
 		}
 
-		public void ImportGrid(long entityID)
+		[HttpGet]
+		public BaseResult ImportCubeGrid(long entityID)
 		{
 			try
 			{
+				if (!SavedCubeGridManager.Contains(entityID))
+					return new BaseResult(string.Format("{0} is not saved", entityID), true);
+				if(SectorObjectManager.Instance.GetEntry(entityID) != null)
+					return new BaseResult(string.Format("{0} is already in the world", entityID), true);
 
+				var savedCubeGrid = SavedCubeGridManager.GetSavedCubeGrid(entityID);
+				CubeGridEntity cubeGrid = new CubeGridEntity(savedCubeGrid.m_versionList.Values[0]);
 
+				SectorObjectManager.Instance.AddEntity(cubeGrid);
+
+				return new BaseResult(string.Format("{0} lastest save imported successfully", entityID), false);
 			}
 			catch (Exception e)
 			{
-
-				throw;
+				Log.Error(e);
+				return new BaseResult(string.Format("Internal error: {0}. See log for details", e.Message), true);
 			}
 		}
 	}

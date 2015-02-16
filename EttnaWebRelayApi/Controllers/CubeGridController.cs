@@ -127,5 +127,20 @@ namespace EttnaWebRelayApi.Controllers
 				return new BaseResult(string.Format("Internal error: {0}. See log for details", e.Message), true);
 			}
 		}
+
+		[HttpGet]
+		public BaseResult Teleport(long entityID, double x, double y, double z)
+		{
+			BaseObject baseObj = SectorObjectManager.Instance.GetEntry(entityID);
+
+			if (!(baseObj is CubeGridEntity))
+				return new BaseResult(string.Format("Entity {0} is not a cubeGrid", entityID), true);
+
+			CubeGridEntity cubeGrid = (CubeGridEntity)baseObj;
+			cubeGrid.Position = new SEModAPI.API.Vector3DWrapper(x, y, z);
+			
+
+			return new BaseResult(string.Format("Ship teleported to X:{0}, Y:{1}, Z:{2}", x, y, z), false);
+		}
 	}
 }

@@ -60,7 +60,7 @@ namespace EttnaWebRelayApi
 					Log.ConsoleAndFile("Config file do not exist");
 					m_config.MainEndpointName = "EttnaWebRelay";
 					m_config.BindIP = "localhost";
-					m_config.Port = 1337;
+					m_config.Port = 9898;
 					m_config.ExportShipPath = FolderPath + @"\Ships";
 					Save();
 				}

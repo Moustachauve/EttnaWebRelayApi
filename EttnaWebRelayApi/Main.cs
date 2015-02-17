@@ -45,7 +45,7 @@ namespace EttnaWebRelayApi
 
 			m_apiServer = new HttpSelfHostServer(config);
 			m_apiServer.OpenAsync().Wait();
-			Log.ConsoleAndFile("Server is running.");
+			Log.ConsoleAndFile(string.Format("Server is running on {0}:{1}/{2}/.", Config.Settings.BindIP, Config.Settings.Port, Config.Settings.MainEndpointName));
 		}
 
 		private void StopWebAPI()

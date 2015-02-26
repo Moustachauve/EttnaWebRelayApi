@@ -149,8 +149,14 @@ namespace EttnaWebRelayApi.Controllers
 			try
 			{
 				BaseObject baseObj = SectorObjectManager.Instance.GetEntry(entityID);
-				string dispName = baseObj.Name;
-				baseObj.Dispose();
+				if (!(baseObj is CubeGridEntity))
+					return new BaseResult(string.Format("Entity {0} is not a cubeGrid", entityID), true);
+
+				CubeGridEntity cubeGrid = (CubeGridEntity)baseObj;
+
+				string dispName = cubeGrid.Name;
+				cubeGrid.Dispose();
+				cubeGrid = null;
 
 				return new BaseResult(string.Format("Ship \"{0}\" ({1}) successfully deleted", dispName, entityID), false);
 			}

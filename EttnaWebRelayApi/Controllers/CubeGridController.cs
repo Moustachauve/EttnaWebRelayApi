@@ -77,7 +77,7 @@ namespace EttnaWebRelayApi.Controllers
 
 			return new GetCubeGridsResult(string.Format("{0} ships found", ownedcubeGrids.Count), false, ownedcubeGrids);
 		}
-		
+
 		[HttpGet]
 		public BaseResult ExportCubeGrid(long entityID)
 		{
@@ -111,7 +111,7 @@ namespace EttnaWebRelayApi.Controllers
 			{
 				if (!SavedCubeGridManager.Contains(entityID))
 					return new BaseResult(string.Format("{0} is not saved", entityID), true);
-				if(SectorObjectManager.Instance.GetEntry(entityID) != null)
+				if (SectorObjectManager.Instance.GetEntry(entityID) != null)
 					return new BaseResult(string.Format("{0} is already in the world", entityID), true);
 
 				var savedCubeGrid = SavedCubeGridManager.GetSavedCubeGrid(entityID);
@@ -138,9 +138,27 @@ namespace EttnaWebRelayApi.Controllers
 
 			CubeGridEntity cubeGrid = (CubeGridEntity)baseObj;
 			cubeGrid.Position = new SEModAPI.API.Vector3DWrapper(x, y, z);
-			
+
 
 			return new BaseResult(string.Format("Ship teleported to X:{0}, Y:{1}, Z:{2}", x, y, z), false);
+		}
+
+		[HttpGet]
+		public BaseResult Delete(long entityID)
+		{
+			try
+			{
+				BaseObject baseObj = SectorObjectManager.Instance.GetEntry(entityID);
+				string dispName = baseObj.Name;
+				baseObj.Dispose();
+
+				return new BaseResult(string.Format("Ship \"{0}\" ({1}) successfully deleted", dispName, entityID), false);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e);
+				return new BaseResult(string.Format("Internal error: {0}. See log for details", e.Message), true);
+			}
 		}
 	}
 }

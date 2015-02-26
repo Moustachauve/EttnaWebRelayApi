@@ -123,5 +123,17 @@ namespace EttnaWebRelayApi.Controllers
 			return new GetChatMessagesFromResult("", false, messageList);
 		}
 
+		[HttpGet]
+		public GetLastMessageIdResult GetLastMessageID()
+		{
+			int lastID = ChatManager.Instance.ChatHistory.Count - 1;
+			string message = null;
+			if (lastID >= 0)
+				message = "Last message ID is " + lastID;
+			else
+				message = "There is currently no message in the list";
+			return new GetLastMessageIdResult(message, false, lastID);
+		}
+
 	}
 }

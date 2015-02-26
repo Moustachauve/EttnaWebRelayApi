@@ -25,4 +25,15 @@ namespace EttnaWebRelayApi.ResultObjects
 			ChatMessages = messageList;
 		}
 	}
+
+	public class GetLastMessageIdResult : BaseResult
+	{
+		public int LastMessageID { get; set; }
+
+		public GetLastMessageIdResult(string status, bool error, int lastId)
+			: base(status, error)
+		{
+			LastMessageID = lastId;
+		}
+	}
 }

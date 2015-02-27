@@ -89,11 +89,12 @@ namespace EttnaWebRelayApi.Controllers
 					return new BaseResult(string.Format("Entity {0} is not a cubeGrid", entityID), true);
 
 				CubeGridEntity cubeGrid = (CubeGridEntity)baseObj;
-
+				string date = DateTime.Now.ToString("yyyyMMddHHmmss");
 				//new FileInfo(Config.Settings.ExportShipPath + @"\" + cubeGrid.EntityId + ".sbc");
-				FileInfo file = new FileInfo(string.Format(@"{0}\{1}_{2}.sbc", Config.Settings.ExportShipPath, cubeGrid.EntityId, DateTime.Now.ToString("yyyyMMddHHmmss")));
+				FileInfo file = new FileInfo(string.Format(@"{0}\{1}_{2}.sbc", Config.Settings.ExportShipPath, cubeGrid.EntityId, date));
 
 				cubeGrid.Export(file);
+				SavedCubeGridManager.AddSavedCubeGrid(entityID, ulong.Parse(date), file);
 
 				return new BaseResult(string.Format("{0} exported successfully", entityID), false);
 			}

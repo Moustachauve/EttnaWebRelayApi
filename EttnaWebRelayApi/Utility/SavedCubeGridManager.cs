@@ -41,6 +41,7 @@ namespace EttnaWebRelayApi.Utility
 
 		public static void ScanDirectory()
 		{
+			m_savedCubeGridList.Clear();
 			if (!Directory.Exists(Config.Settings.ExportShipPath))
 			{
 				Directory.CreateDirectory(Config.Settings.ExportShipPath);

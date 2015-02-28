@@ -111,7 +111,11 @@ namespace EttnaWebRelayApi.Controllers
 			try
 			{
 				if (!SavedCubeGridManager.Contains(entityID))
-					return new BaseResult(string.Format("{0} is not saved", entityID), true);
+				{
+					SavedCubeGridManager.ScanDirectory();
+					if (!SavedCubeGridManager.Contains(entityID))
+						return new BaseResult(string.Format("{0} is not saved", entityID), true);
+				}
 				if (SectorObjectManager.Instance.GetEntry(entityID) != null)
 					return new BaseResult(string.Format("{0} is already in the world", entityID), true);
 
